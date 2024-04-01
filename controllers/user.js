@@ -1,36 +1,45 @@
-const logs = require('../crearLogs');
+
+const User = require('../models/User.js');
+
 class controllerUser {
-    constructor() {
-        this.User = require('../models/User');
+    async allUsers(req, res, next) {
+        const users = await User.readUsers();
+        //console.log(users, Array.isArray(users));
+        //console.log(req.ip);
+        res.send(users);
     }
 
-    async createUser(dta) {
-        const newUser = new this.User(dta);
-        return await newUser.save().then(user => {
-            return true;
-        }).catch(err => {
-            logs(err);
-            console.log('ttt', typeof err, err.code);
-            return err ? err : false;
+    async userId(req, res, next) {
+        const users = await User.readUser({ _id: req.params.id });
+        res.send(users);
+    }
+
+    async guardarUser(req, res, next) {
+        const users = await User.createUser(req.body)
+        if (users && users.code && users.code == 11000) {
+            res.status(404);
+            res.send({
+                //code: users.code,
+                msg: `el campo con valor ${JSON.stringify(users.keyValue)} ya existe`
+            });
+        } else {
+            res.send(users);
+        }
+    }
+
+    async eliminarUserId(req, res, next) {
+        const users = await User.deleteUsers({ _id: req.params.id });
+        res.send({
+            rowsAfect: users
         });
     }
 
-    async readUsers(query = {}) {
-        return await this.User.find(query).select('-__v')
-    }
-
-    async readUser(query = {}) {
-        return await this.User.findOne(query).select('-__v')
-    }
-
-    async updateUsers(query, dta) {
-        const updatedta = await this.User.updateMany(query, dta);
-        return updatedta.modifiedCount;
-    }
-
-    async deleteUsers(query) {
-        const deletedta = await this.User.deleteMany(query);
-        return deletedta.deletedCount;
+    async actualizarUserId(req, res, next) {
+        console.log(req.ip, req.body);
+        const users = await User.updateUsers({ _id: req.params.id }, req.body);
+        res.send({
+            rowsAfect: users
+        });
     }
 }
 

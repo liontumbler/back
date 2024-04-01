@@ -1,37 +1,50 @@
-require('../db/db.js');
+require('./db.js');
 const { Schema, model } = require('mongoose');
 
-const rolSchema = new Schema({
+const userSchema = new Schema({
     name: {
         type: String,
         maxLength: 100,
         required: true,
     },
-    description: {
+    lastName: {
         type: String,
-        maxLength: 1,
-        maxLength: 255,
-    },
-    permiso: {
-        type: String,
-        maxLength: 1,
+        minLength: 1,
         maxLength: 100,
         required: true
     },
-    correo: {
+    nickName: {
         type: String,
-        maxLength: 1,
+        minLength: 1,
+        maxLength: 100,
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        minLength: 1,
+        maxLength: 100,
+        required: true
+    },
+    email: {
+        type: String,
+        minLength: 1,
         maxLength: 100,
     },
-    telefono: {
+    phone: {
         type: Number,
         min: 1, max: 999999999999
     },
-    claveCaja: {
+    passBox: {
         type: Number,
         min: 4, max: 4
     },
-    activo: {
+    xApiKey: {
+        type: String,
+        minLength: 1,
+        maxLength: 255
+    },
+    active: {
         type: Boolean,
         default: true,
     },
@@ -40,7 +53,7 @@ const rolSchema = new Schema({
         default: false,
     },
     rol: Schema.Types.ObjectId,
-
+    company: Schema.Types.ObjectId,
 }, { timestamps: true })
 
-module.exports = model('User', rolSchema);
+module.exports = model('User', userSchema);

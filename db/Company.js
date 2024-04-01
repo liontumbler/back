@@ -1,10 +1,10 @@
-require('../db/db.js');
+require('./db.js');
 const { Schema, model } = require('mongoose');
 
 const companySchema = new Schema({
-    pedido: {
+    name: {
         type: String,
-        maxLength: 1,
+        minLength: 1,
         maxLength: 100,
         required: true,
     },
@@ -18,15 +18,13 @@ const companySchema = new Schema({
     },
     description: {
         type: String,
-        maxLength: 1,
+        minLength: 1,
         maxLength: 255,
     },
-    activo: {
+    active: {
         type: Boolean,
         default: true,
     },
-    company: Schema.Types.ObjectId,
-
 }, { timestamps: true })
 
 module.exports = model('Company', companySchema)

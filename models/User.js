@@ -1,54 +1,36 @@
-require('../db/db.js');
-const { Schema, model } = require('mongoose');
+class modelUser {
+    constructor() {
+        this.User = require('../db/User');
+        this.logs = require('../crearLogs');
+    }
 
-const userSchema = new Schema({
-    name: {
-        type: String,
-        maxLength: 100,
-        required: true,
-    },
-    lastName: {
-        type: String,
-        maxLength: 1,
-        maxLength: 100,
-        required: true
-    },
-    nickName: {
-        type: String,
-        maxLength: 1,
-        maxLength: 100,
-        required: true,
-        unique: true
-    },
-    password: {
-        type: String,
-        maxLength: 1,
-        maxLength: 100,
-        required: true
-    },
-    correo: {
-        type: String,
-        maxLength: 1,
-        maxLength: 100,
-    },
-    telefono: {
-        type: Number,
-        min: 1, max: 999999999999
-    },
-    claveCaja: {
-        type: Number,
-        min: 4, max: 4
-    },
-    activo: {
-        type: Boolean,
-        default: true,
-    },
-    admin: {
-        type: Boolean,
-        default: false,
-    },
-    rol: Schema.Types.ObjectId,
-    company: Schema.Types.ObjectId,
-}, { timestamps: true })
+    async createUser(dta) {
+        const newUser = new this.User(dta);
+        return await newUser.save().then(user => {
+            return true;
+        }).catch(err => {
+            this.logs(err);
+            return err ? err : false;
+        });
+    }
+    
+    async readUsers(query = {}) {
+        return await this.User.find(query).select('-__v')
+    }
+    
+    async readUser(query = {}) {
+        return await this.User.findOne(query).select('-__v')
+    }
+    
+    async updateUsers(query, dta) {
+        const updatedta = await this.User.updateMany(query, dta);
+        return updatedta.modifiedCount;
+    }
+    
+    async deleteUsers(query) {
+        const deletedta = await this.User.deleteMany(query);
+        return deletedta.deletedCount;
+    }
+}
 
-module.exports = model('User', userSchema);
+module.exports = new modelUser();
