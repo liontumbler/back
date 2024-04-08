@@ -1,3 +1,7 @@
+//require('dotenv').config();
+//console.log('xxx', process.env);
+//console.log('PORT', process.env.PORT);
+
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');

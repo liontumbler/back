@@ -1,3 +1,6 @@
+const bcrypt = require('bcryptjs');
+const salt = bcrypt.genSaltSync(10);
+
 class modelUser {
     constructor() {
         this.User = require('../db/User');
@@ -5,6 +8,9 @@ class modelUser {
     }
 
     async createUser(dta) {
+        //bcrypt.compareSync(dta.password, hash_BD);
+        const hash = bcrypt.hashSync(dta.password, salt);
+        dta.password = hash;
         const newUser = new this.User(dta);
         return await newUser.save().then(user => {
             return true;

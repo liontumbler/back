@@ -4,6 +4,7 @@ const { Schema, model } = require('mongoose');
 const clientSchema = new Schema({
     name: {
         type: String,
+        minLength: 1,
         maxLength: 100,
         required: true,
     },
@@ -17,7 +18,6 @@ const clientSchema = new Schema({
         type: String,
         minLength: 1,
         maxLength: 100,
-        required: true
     },
     phone: {
         type: Number,
@@ -26,13 +26,15 @@ const clientSchema = new Schema({
     },
     typeDocument: {
         type: String,
-        minLength: 1,
-        maxLength: 100,
+        minLength: 2,
+        maxLength: 3,
+        required: true
     },
     numberDocument: {
         type: Number,
         min: 1,
         max: 9999999999999,
+        required: true
     },
     company: Schema.Types.ObjectId,
 }, { timestamps: true })

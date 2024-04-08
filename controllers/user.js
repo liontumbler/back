@@ -3,9 +3,12 @@ const User = require('../models/User.js');
 
 class controllerUser {
     async allUsers(req, res, next) {
-        const users = await User.readUsers();
         //console.log(users, Array.isArray(users));
-        //console.log(req.ip);
+        //console.log(req.body);
+        console.log(req.hostname);
+        console.log(req.ip);
+        
+        const users = await User.readUsers();
         res.send(users);
     }
 
@@ -35,7 +38,6 @@ class controllerUser {
     }
 
     async actualizarUserId(req, res, next) {
-        console.log(req.ip, req.body);
         const users = await User.updateUsers({ _id: req.params.id }, req.body);
         res.send({
             rowsAfect: users

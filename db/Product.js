@@ -8,12 +8,17 @@ const productSchema = new Schema({
         maxLength: 100,
         required: true
     },
+    img: {
+        type: String,
+        minLength: 1,
+        maxLength: 255,
+    },
     price: {
         type: Number,
         min: 0, max: 1000000,
         required: true
     },
-    ref: {
+    reference: {
         type: String,
         minLength: 1,
         maxLength: 100,
